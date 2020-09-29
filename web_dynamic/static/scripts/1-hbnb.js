@@ -1,17 +1,26 @@
 const $ = window.$;
-$(document).ready(function () {
-  const checkedAmenities = {};
-  $(document).on('change', "input[type='checkbox']", function () {
-    if (this.checked) {
-      checkedAmenities[$(this).data('id')] = $(this).data('name');
+$(function () {
+  const amenitiesList = [];
+  $('input[type=checkbox]').prop('checked', false);
+
+  $('.amenities h4').css({
+    width: '100%',
+    height: '100%',
+    'white-space': 'nowrap',
+    overflow: 'hidden',
+    'text-overflow': 'ellipsis',
+    'padding-bottom': '16px'
+  });
+
+  $('input[type="checkbox"]').click(function () {
+    const $checkbox = $(this);
+    if ($checkbox.prop('checked') === true) {
+      amenitiesList.push($checkbox.data('name'));
     } else {
-      delete checkedAmenities[$(this).data('id')];
+      amenitiesList.forEach((elemt, index) => {
+        if (elemt === $checkbox.data('name')) { amenitiesList.splice(index, 1); }
+      });
     }
-    const lst = Object.values(checkedAmenities);
-    if (lst.length > 0) {
-      $('div.amenities > h4').text(Object.values(checkedAmenities).join(', '));
-    } else {
-      $('div.amenities > h4').html('&nbsp;');
-    }
+    $('.amenities h4').text(amenitiesList.join(', '));
   });
 });
